@@ -56,5 +56,72 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    <script>
+
+        document.getElementById('get-decrypt-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const form = event.target;
+            const encryptedPassword = form.querySelector('#get_encrypted_password').value;
+            const key = form.querySelector('#get_key').value;
+            fetch(`/?encrypted_password=${encodeURIComponent(encryptedPassword)}&key=${encodeURIComponent(key)}`)
+            .then(response => response.text())
+            .then(html => {
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(html, 'text/html');
+                const newContent = doc.querySelector('#get-decryption-result').innerHTML;
+                document.querySelector('#get-decryption-result').innerHTML = newContent;
+
+                Toastify({
+                    text: "Password decrypted successfully via AES!",
+                    duration: 3000,
+                    gravity: "top",
+                    position: "center",
+                    backgroundColor: "green",
+                }).showToast();
+            })
+            .catch(error => {
+                Toastify({
+                    text: "Error decrypting password via GET.",
+                    duration: 3000,
+                    gravity: "top",
+                    position: "center",
+                    backgroundColor: "red",
+                }).showToast();
+                console.error('Error:', error);
+            });
+        });
+
+        // Copy encrypted password to clipboard
+        document.getElementById('copy-encrypted-password').addEventListener('click', function() {
+            const encryptedPassword = document.getElementById('encrypted_password_display').innerText;
+            navigator.clipboard.writeText(encryptedPassword).then(() => {
+                Toastify({
+                    text: "Encrypted password copied to clipboard!",
+                    duration: 3000,
+                    gravity: "top",
+                    position: "center",
+                    backgroundColor: "blue",
+                }).showToast();
+            }).catch(err => {
+                console.error('Could not copy text: ', err);
+            });
+        });
+
+        // Copy encryption key to clipboard
+        document.getElementById('copy-encryption-key').addEventListener('click', function() {
+            const encryptionKey = document.getElementById('encryption_key_display').innerText;
+            navigator.clipboard.writeText(encryptionKey).then(() => {
+                Toastify({
+                    text: "Encryption key copied to clipboard!",
+                    duration: 3000,
+                    gravity: "top",
+                    position: "center",
+                    backgroundColor: "blue",
+                }).showToast();
+            }).catch(err => {
+                console.error('Could not copy text: ', err);
+            });
+        });
+    </script>
 </body>
 </html>
