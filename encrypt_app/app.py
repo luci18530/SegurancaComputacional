@@ -23,7 +23,26 @@ def decrypt_password(encrypted_password, key_hex):
     password = cipher.decrypt(ciphertext).decode('utf-8')
     return password
 
+@app.route('/', methods=['GET', 'POST'])
+def index():
+    encrypted_password = None
+    key = None
+    decrypted_password = None
+    error = None
 
+    if request.method == 'POST' and 'encrypt' in request.form:
+        password = request.form['password']
+        encrypted_password, key = encrypt_password(password)
+        return render_template('index.html', encrypted_password=encrypted_password, key=key.hex())
+
+    if request.method == 'POST' and 'decrypt' in request.form:
+        encrypted_password = request.form['encrypted_password']
+        key = request.form['key']
+        try:
+            decrypted_password = decrypt_password(encrypted_password, key)
+            return render_template('index.html', decrypted_password=decrypted_password)
+        except Exception as e:
+            error = "Invalid encrypted password or key"
 
 
 if __name__ == '__main__':
