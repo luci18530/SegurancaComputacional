@@ -91,6 +91,21 @@
             });
         });
 
+        // Clear data button functionality
+        document.getElementById('clear-data').addEventListener('click', function() {
+            document.getElementById('password').value = '';
+            document.getElementById('get_encrypted_password').value = '';
+            document.getElementById('get_key').value = '';
+            document.getElementById('encryption-result').innerHTML = '';
+            document.getElementById('get-decryption-result').innerHTML = '';
+            if (document.getElementById('encrypted_password_display')) {
+                document.getElementById('encrypted_password_display').innerHTML = '';
+            }
+            if (document.getElementById('encryption_key_display')) {
+                document.getElementById('encryption_key_display').innerHTML = '';
+            }
+        });
+
         // Copy encrypted password to clipboard
         document.getElementById('copy-encrypted-password').addEventListener('click', function() {
             const encryptedPassword = document.getElementById('encrypted_password_display').innerText;
