@@ -1,0 +1,71 @@
+:root{
+    --background-color: #f4f4f4;
+    --dark-color: #333;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: var(--background-color);
+    color: var(--dark-color);
+}
+
+.container {
+    width: 40rem;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+h1, h2 {
+    margin-bottom: 20px;
+}
+
+label {
+    display: flex;
+    margin-bottom: 10px;
+    align-self: flex-start;
+}
+
+input {
+    width: 75%;
+    padding: 8px;
+}
+
+button {
+    padding: 10px 20px;
+    background-color: #007BFF;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    height: 35px;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+form {
+    display: flex;
+    justify-content: start;
+    flex-direction: column;
+}
+
+form div {
+    display: flex;
+    justify-content: space-between;
+}
+
+form input {
+    margin-bottom: 15px;
+}
+
+.result {
+    margin-top: 20px;
+    text-align: left;
+}
+
+.decrypt-button{
+    width: 140px;
+}
