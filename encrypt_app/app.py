@@ -44,6 +44,17 @@ def index():
         except Exception as e:
             error = "Invalid encrypted password or key"
 
+    # Process GET requests
+    if request.method == 'GET':
+        encrypted_password = request.args.get('encrypted_password')
+        key = request.args.get('key')
+        if encrypted_password and key:
+            try:
+                decrypted_password = decrypt_password(encrypted_password, key)
+            except Exception as e:
+                error = "Invalid encrypted password or key"
+
+    return render_template('index.html', encrypted_password=encrypted_password, key=key, decrypted_password=decrypted_password, error=error)
 
 if __name__ == '__main__':
     app.run(debug=True)
