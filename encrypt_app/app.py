@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect, url_for
 from Crypto.Cipher import AES
 import base64
 import os
@@ -30,29 +30,31 @@ def index():
     decrypted_password = None
     error = None
 
-    if request.method == 'POST' and 'encrypt' in request.form:
-        password = request.form['password']
-        encrypted_password, key = encrypt_password(password)
-        return render_template('index.html', encrypted_password=encrypted_password, key=key.hex())
+    if request.method == 'POST':
+        if 'encrypt' in request.form:
+            password = request.form['password']
+            if password:
+                encrypted_password, key = encrypt_password(password)
+                return render_template('index.html', encrypted_password=encrypted_password, key=key.hex())
+            else:
+                error = "Password cannot be empty."
 
-    if request.method == 'POST' and 'decrypt' in request.form:
-        encrypted_password = request.form['encrypted_password']
-        key = request.form['key']
-        try:
-            decrypted_password = decrypt_password(encrypted_password, key)
-            return render_template('index.html', decrypted_password=decrypted_password)
-        except Exception as e:
-            error = "Invalid encrypted password or key"
+        elif 'decrypt' in request.form:
+            encrypted_password = request.form['encrypted_password']
+            key = request.form['key']
+            try:
+                decrypted_password = decrypt_password(encrypted_password, key)
+            except Exception:
+                error = "Invalid encrypted password or key."
 
-    # Process GET requests
     if request.method == 'GET':
         encrypted_password = request.args.get('encrypted_password')
         key = request.args.get('key')
         if encrypted_password and key:
             try:
                 decrypted_password = decrypt_password(encrypted_password, key)
-            except Exception as e:
-                error = "Invalid encrypted password or key"
+            except Exception:
+                error = "Invalid encrypted password or key."
 
     return render_template('index.html', encrypted_password=encrypted_password, key=key, decrypted_password=decrypted_password, error=error)
 
