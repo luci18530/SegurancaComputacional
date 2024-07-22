@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Encryption App</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Encrypt Your Password via AES</h1>
+        <form method="POST" id="encrypt-form">
+            <label for="password">Enter Password:</label>
+            <div>
+                <input type="password" id="password" name="password" required>
+                <button type="submit" name="encrypt">Encrypt</button>
+            </div>
+        </form>
+        <div id="encryption-result">
+            {% if encrypted_password %}
+            <div class="result">
+                <h2>Encrypted Password:</h2>
+                <p id="encrypted_password_display">{{ encrypted_password }}</p>
+                <button id="copy-encrypted-password">Copy Encrypted Password</button>
+                <h2>Encryption Key (Hex):</h2>
+                <p id="encryption_key_display">{{ key }}</p>
+                <button id="copy-encryption-key">Copy Encryption Key (Hex)</button>
+            </div>
+            {% endif %}
+        </div>
+        <button id="clear-data">Clear Data</button>
+
+        <h1>Decrypt Password</h1>
+        <form method="GET" id="get-decrypt-form">
+            <label for="get_encrypted_password">Enter Encrypted Password:</label>
+            <input type="text" id="get_encrypted_password" name="encrypted_password" required>
+            <label for="get_key">Enter Encryption Key (Hex):</label>
+            <input type="text" id="get_key" name="key" required>
+            <button class="decrypt-button" type="submit">Decrypt via GET</button>
+        </form>
+        <div id="get-decryption-result">
+            {% if decrypted_password %}
+            <div class="result">
+                <h2>Decrypted Password (GET):</h2>
+                <p>{{ decrypted_password }}</p>
+            </div>
+            {% endif %}
+            {% if error %}
+            <div class="result">
+                <h2>Error (GET):</h2>
+                <p>{{ error }}</p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+</body>
+</html>
