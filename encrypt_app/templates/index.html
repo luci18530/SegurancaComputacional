@@ -71,13 +71,24 @@
                 const newContent = doc.querySelector('#get-decryption-result').innerHTML;
                 document.querySelector('#get-decryption-result').innerHTML = newContent;
 
-                Toastify({
-                    text: "Password decrypted successfully via AES!",
-                    duration: 3000,
-                    gravity: "top",
-                    position: "center",
-                    backgroundColor: "green",
-                }).showToast();
+                
+                if (doc.querySelector('#get-decryption-result h2').textContent.includes('Decrypted Password (GET):')) {
+                    Toastify({
+                        text: "Password decrypted successfully via AES!",
+                        duration: 3000,
+                        gravity: "top",
+                        position: "center",
+                        backgroundColor: "green",
+                    }).showToast();
+                } else if (doc.querySelector('#get-decryption-result h2').textContent.includes('Error (GET):')) {
+                    Toastify({
+                        text: "Error decrypting password via GET.",
+                        duration: 3000,
+                        gravity: "top",
+                        position: "center",
+                        backgroundColor: "red",
+                    }).showToast();
+                }
             })
             .catch(error => {
                 Toastify({
