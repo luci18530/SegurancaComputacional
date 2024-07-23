@@ -8,10 +8,11 @@ Implementação e demonstração do algoritmo de hash e hash + salt
 
 ## Instalação de requirements
 
-Para a instalação dos requiremtens digite o seguinte código no terminal ( caso necessario crie um venv ): pip install -r requirements.txt
+Para a instalação dos requiremtens digite o seguinte código no terminal ( caso necessário crie um venv ): pip install -r requirements.txt
 
 ## Para rodar o código
 
 python main.py
 
-#### Para mais informações e explicações sobre o algoritmo e como podemos melhora-lo em relação a segurança e armazenamento de senhas em databases veja o video a seguir: https://www.youtube.com/watch?v=qgpsIBLvrGY
+#### Para mais informações e explicações sobre o algoritmo e como podemos melhorá-lo em relação a segurança e armazenamento de senhas em databases veja o video a seguir: https://www.youtube.com/watch?v=qgpsIBLvrGY
+#### Para explicações detalhadas do algoritmo recomendo esse vídeo: https://www.youtube.com/watch?v=orIgy2MjqrA
