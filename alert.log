@@ -1,0 +1,2 @@
+2024-10-10 22:51:19,338 - ALERT - Possível tentativa de SQL Injection pelo usuário SELECT * FROM do IP 127.0.0.1.
+2024-10-10 22:52:11,719 - ALERT - Possível tentativa de SQL Injection pelo usuário SELECT * FROM do IP 127.0.0.1.
