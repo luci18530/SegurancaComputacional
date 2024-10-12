@@ -1,9 +1,13 @@
+from collections import defaultdict
 from flask import Flask, render_template, request, redirect, url_for
 import logging
 from datetime import datetime
 import re
 import config
 from patterns import SQL_INJECTION_PATTERNS, XSS_PATTERNS, COMMAND_INJECTION_PATTERNS
+
+FAILED_LOGINS = defaultdict(int)
+BLOCKED_IPS = {}
 
 app = Flask(__name__)
 
@@ -57,6 +61,9 @@ def is_command_injection(input_str):
 
 @app.route('/', methods=['GET', 'POST'])
 def login():
+    if check_rate_limit(request.remote_addr):
+        return 'Seu IP foi bloqueado temporariamente devido a tentativas de login falhas.', 403
+    
     if request.method == 'POST':
         username = request.form.get('username', '')
         password = request.form.get('password', '')
@@ -67,6 +74,10 @@ def login():
         command_injection_detected = is_command_injection(username) or is_command_injection(password)
 
         extra = {'username': username, 'ip': request.remote_addr}
+
+        if username not in USERS or USERS[username] != password:
+            print('Login falho:', username)
+            track_failed_login(request.remote_addr)
 
         if username in USERS and USERS[username] == password:
             if sql_injection_detected:
@@ -89,7 +100,42 @@ def login():
             else:
                 logger.warning('LOGIN_FAILURE', extra=extra)
             return 'Credenciais inválidas.'
+        
+        
+
     return render_template('login.html')
+
+
+
+def check_rate_limit(ip_address):
+    now = datetime.now()
+    if ip_address in BLOCKED_IPS:
+        if (now - BLOCKED_IPS[ip_address]).total_seconds() < 600:  # 10 minutos bloqueado
+            return True
+        else:
+            del BLOCKED_IPS[ip_address]
+    return False
+
+def track_failed_login(ip_address):
+    now = datetime.now()
+
+    # Verificar se o IP já tem uma lista de tentativas, senão inicializar como lista vazia
+    if not isinstance(FAILED_LOGINS[ip_address], list):
+        FAILED_LOGINS[ip_address] = []
+
+    # Limpar entradas antigas (tentativas com mais de 10 minutos)
+    FAILED_LOGINS[ip_address] = [attempt for attempt in FAILED_LOGINS[ip_address] if (now - attempt).total_seconds() < 600]
+
+    # Adicionar a nova tentativa
+    FAILED_LOGINS[ip_address].append(now)
+    print(f"Tentativas de login falhas para {ip_address}: {FAILED_LOGINS[ip_address]}")
+
+    # Verifica se excedeu o limite de tentativas (5 falhas em 10 minutos)
+    if len(FAILED_LOGINS[ip_address]) > 5:
+        BLOCKED_IPS[ip_address] = now  # Bloqueia o IP por 10 minutos
+        logger.warning(f"IP {ip_address} BLOQUEADO devido a múltiplas tentativas de login falhas.")
+        FAILED_LOGINS[ip_address] = []  # Reseta as tentativas após bloquear
+
 
 if __name__ == '__main__':
     app.run(debug=True)
