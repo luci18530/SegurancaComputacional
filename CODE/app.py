@@ -33,6 +33,8 @@ USERS = {
     'admin': 'admin123',
     'user1': 'password1',
     'user2': 'password2',
+    'professor1': 'password1',
+    'student1': 'password1'
 }
 
 def is_sql_injection(input_str):
@@ -88,6 +90,16 @@ def login():
                 logger.warning('LOGIN_SUCCESS_WITH_COMMAND_INJECTION_ATTEMPT', extra=extra)
             else:
                 logger.info('LOGIN_SUCCESS', extra=extra)
+                # Redirecionar para o painel de acordo com o papel do usuário
+                if username == 'admin':
+                    return redirect(url_for('admin_dashboard'))
+                elif username.startswith('user'):
+                    return redirect(url_for('user_dashboard'))
+                elif username.startswith('professor'):
+                    return redirect(url_for('professor_dashboard'))
+                else:
+                    return redirect(url_for('student_dashboard'))
+
             return f'Bem-vindo, {username}!'
         else:
             # Login falho
@@ -101,10 +113,27 @@ def login():
                 logger.warning('LOGIN_FAILURE', extra=extra)
             return 'Credenciais inválidas.'
         
-        
+
 
     return render_template('login.html')
 
+""" rotas para controle de acesso por papeis """
+
+@app.route('/admin_dashboard')
+def admin_dashboard():
+    return render_template('admin_dashboard.html')
+
+@app.route('/user_dashboard')
+def user_dashboard():
+    return render_template('user_dashboard.html')
+
+@app.route('/professor_dashboard')
+def professor_dashboard():
+    return render_template('professor_dashboard.html')
+
+@app.route('/student_dashboard')
+def student_dashboard():
+    return render_template('student_dashboard.html')
 
 
 def check_rate_limit(ip_address):
