@@ -3,6 +3,7 @@ from flask import Flask, render_template, request, redirect, url_for
 import logging
 from datetime import datetime
 import re
+import os
 import config
 from patterns import SQL_INJECTION_PATTERNS, XSS_PATTERNS, COMMAND_INJECTION_PATTERNS
 
@@ -65,7 +66,7 @@ def is_command_injection(input_str):
 def login():
     if check_rate_limit(request.remote_addr):
         return 'Seu IP foi bloqueado temporariamente devido a tentativas de login falhas.', 403
-    
+
     if request.method == 'POST':
         username = request.form.get('username', '')
         password = request.form.get('password', '')
@@ -164,6 +165,16 @@ def track_failed_login(ip_address):
         BLOCKED_IPS[ip_address] = now  # Bloqueia o IP por 10 minutos
         logger.warning(f"IP {ip_address} BLOQUEADO devido a múltiplas tentativas de login falhas.")
         FAILED_LOGINS[ip_address] = []  # Reseta as tentativas após bloquear
+
+
+""" admin panel para logs """
+# Simulando os usuários e suas funções
+USERS_ROLES = {
+    'admin': 'Administrador',
+    'user1': 'Usuário',
+    'professor1': 'Professor',
+    'student1': 'Estudante',
+}
 
 
 if __name__ == '__main__':
