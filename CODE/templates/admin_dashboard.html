@@ -7,50 +7,132 @@
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f5f5f5;
-            color: #333;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            flex-direction: column;
+            background-color: #f0f4f4;
+            padding: 20px;
         }
 
         h1 {
-            color: #d32f2f;
-            font-size: 2.5rem;
+            color: #333;
+            text-align: center;
             margin-bottom: 20px;
         }
 
-        a.button {
-            background-color: #d32f2f;
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #689f38;
             color: white;
-            padding: 12px 24px;
+        }
+
+        td {
+            background-color: #f9f9f9;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        a.button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #689f38;
+            color: white;
             text-decoration: none;
             border-radius: 5px;
-            font-size: 1.2rem;
-            font-weight: bold;
-            transition: background-color 0.3s ease, transform 0.2s ease;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s ease;
         }
 
         a.button:hover {
-            background-color: #b71c1c;
-            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);
-            transform: translateY(-3px);
-        }
-
-        a.button:active {
-            background-color: #9a0007;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-            transform: translateY(0);
+            background-color: #558b2f;
         }
     </style>
 </head>
 <body>
-    <h1>Bem-vindo ao Painel de Administração!</h1>
-    <a href="{{ url_for('login') }}" class="button">Voltar para a página de login</a>
+    <h1>Painel de Administração</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Nome do Usuário</th>
+                <th>Função</th>
+                <th>Acessos Bem-sucedidos</th>
+                <th>Tentativas Falhas</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Exemplo de dados fake -->
+            <tr>
+                <td>admin</td>
+                <td>Administrador</td>
+                <td>5</td>
+                <td>2</td>
+            </tr>
+            <tr>
+                <td>joaodasilva</td>
+                <td>Estudante</td>
+                <td>7</td>
+                <td>5</td>
+            </tr>
+            <tr>
+                <td>maria.ferreira</td>
+                <td>Professor</td>
+                <td>4</td>
+                <td>1</td>
+            </tr>
+            <tr>
+                <td>carlos.moura</td>
+                <td>Professor</td>
+                <td>5</td>
+                <td>8</td>
+            </tr>
+            <tr>
+                <td>luanadias</td>
+                <td>Administrador</td>
+                <td>6</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>teste.user</td>
+                <td>Usuário</td>
+                <td>10</td>
+                <td>3</td>
+            </tr>
+            <tr>
+                <td>pedro.santos</td>
+                <td>Estudante</td>
+                <td>2</td>
+                <td>4</td>
+            </tr>
+            <tr>
+                <td>andre.costa</td>
+                <td>Estudante</td>
+                <td>9</td>
+                <td>10</td>
+            </tr>
+            <tr>
+                <td>lucas.souza</td>
+                <td>Usuário</td>
+                <td>20</td>
+                <td>6</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div style="text-align: center;">
+        <a href="{{ url_for('login') }}" class="button">Voltar para a página de login</a>
+    </div>
 </body>
 </html>
